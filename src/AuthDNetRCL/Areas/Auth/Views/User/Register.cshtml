@@ -1,0 +1,126 @@
+@using AuthDNetLib.Helper.Expressions
+@using AuthDNetLib.Helper.Transfer.Data
+@using AuthDNetLib.Models.Users
+@using AuthDNetLib.Helper.Messages
+
+@model TUser
+
+@{
+    Layout = "_Layout";
+    ViewData["Title"] = "Register";
+}
+
+<div id="register-user-container" class="container">
+
+    <div class="card col-md-8 border-secondary">
+
+        <div class="card-body">
+
+            <form id="register-user-form" asp-action="Register" asp-controller="User" method="post" class="needs-validation" novalidate>
+
+                @Html.AntiForgeryToken()
+
+                <div class="row">
+
+                    <!-- Campo Nome -->
+                    <div class="col-md-6 form-group floating-label">
+                        <div class="position-relative">
+                            <input type="text" class="form-control @(ViewData.ModelState["Name"]?.Errors.Count > 0 ? "is-invalid" : "")" id="name" name="Name" data-validation-rules="required, min-length" data-min-length="6" asp-for="@Model.Name" autocomplete="Name" value="@Model.Name" required>
+                            <label for="name" class="floating-label-text">Nome completo</label>
+                            <div class="invalid-tooltip"><span>@Html.ValidationMessageFor(x => x.Name)</span></div>
+                        </div>
+                    </div>
+
+                    <!-- Campo Login -->
+                    <div class="col-md-6 form-group floating-label">
+                        <div class="position-relative">
+                            <input type="text" class="form-control @(ViewData.ModelState["Login"]?.Errors.Count > 0 ? "is-invalid" : "")" id="login" name="Login" data-validation-rules="required, min-length" data-min-length="6" asp-for="@Model.Login" autocomplete="UserName" value="@Model.Login" required>
+                            <label for="login" class="floating-label-text">Login</label>
+                            <div class="invalid-tooltip"><span>@Html.ValidationMessageFor(x => x.Login)</span></div>
+                        </div>
+                    </div>
+
+                </div>
+
+                <div class="row">
+
+                    <!-- Campo Email -->
+                    <div class="col-md-6 form-group floating-label">
+                        <div class="position-relative">
+                            <input type="email" class="form-control @(ViewData.ModelState["Email"]?.Errors.Count > 0 ? "is-invalid" : "")" id="email" name="Email" data-validation-rules="required, pattern" maxlength="100" data-pattern="@ConstExpressions.EmailRegex.Trim()" asp-for="@Model.Email" autocomplete="Email" value="@Model.Email" required>
+                            <label for="email" class="floating-label-text">Email</label>
+                            <div class="invalid-tooltip"><span>@Html.ValidationMessageFor(x => x.Email)</span></div>
+                        </div>
+                    </div>
+
+                    <!-- Campo Celular -->
+                    <div class="col-md-6 form-group floating-label">
+                        <div class="position-relative">
+                            <input type="tel" class="form-control @(ViewData.ModelState["CellPhone"]?.Errors.Count > 0 ? "is-invalid" : "")" maxlength="15" id="cellPhone" name="CellPhone" data-validation-rules="required, pattern" data-pattern="@ConstExpressions.PhoneNumberRegex.Trim()" asp-for="@Model.CellPhone" autocomplete="tel" value="@Model.CellPhone" required>
+                            <label for="cellPhone" class="floating-label-text">Telefone (XX) XXXXX-XXXX</label>
+                            <div class="invalid-tooltip"><span>@Html.ValidationMessageFor(x => x.CellPhone)</span></div>
+                        </div>
+                    </div>
+
+                </div>
+
+                <div class="row">
+
+                    <!-- Campo Confirmar Email -->
+                    <div class="col-md-6 form-group floating-label">
+                        <div class="position-relative">
+                            <input type="email" class="form-control @(ViewData.ModelState["ConfirmEmail"]?.Errors.Count > 0 ? "is-invalid" : "")" id="confirm-email" data-validation-rules="required, confirm-email, pattern" data-pattern="@ConstExpressions.EmailRegex.Trim()" data-confirm-email-for="email" maxlength="100" name="ConfirmEmail" asp-for="@Model.ConfirmEmail" autocomplete="Email" value="@Model.ConfirmEmail" required />
+                            <label for="confirm-email" class="floating-label-text">Confirme seu email</label>
+                            <div class="invalid-tooltip"><span>@Html.ValidationMessageFor(x => x.ConfirmEmail)</span></div>
+                        </div>
+                    </div>
+
+                    <!-- Campo Senha -->
+                    <div class="col-md-6 form-group floating-label">
+                        <div class="position-relative">
+                            <input type="password" class="form-control input-password @(ViewData.ModelState["Password"]?.Errors.Count > 0 ? "is-invalid" : "")" id="password" name="Password" data-validation-rules="required, pattern" minlength="8" data-pattern="@ConstExpressions.StrongPasswordRegex.Trim()" data-error-message="@ErrorMessages.MsgPasswordRegex.Trim()" asp-for="@Model.Password" autocomplete="new-password" value="@Model.Password" required>
+                            <label for="password" class="floating-label-text">Sua senha</label>
+                            <i data-bs-toggle="tooltip" data-bs-placement="right" title="Exibir senha ..." class="bi bi-eye-slash-fill toggle-password"></i>
+                            <div class="invalid-tooltip"><span>@Html.ValidationMessageFor(x => x.Password)</span></div>
+                        </div>
+                    </div>
+
+                </div>
+
+                <div class="row">
+
+                    <!-- Campo Local de Trabalho -->
+                    <div class="col-md-6 form-group floating-label">
+                        <div class="position-relative">
+                            <input type="text" class="form-control @(ViewData.ModelState["Workplace"]?.Errors.Count > 0 ? "is-invalid" : "")" id="workplace" name="Workplace" data-validation-rules="required, min-length" data-min-length="4" asp-for="@Model.Workplace" autocomplete="organization" value="@Model.Workplace" required>
+                            <label for="workplace" class="floating-label-text">Local de Trabalho</label>
+                            <div class="invalid-tooltip"><span>@Html.ValidationMessageFor(x => x.Workplace)</span></div>
+                        </div>
+                    </div>
+
+                    <!-- Campo Confirmar Senha -->
+                    <div class="col-md-6 form-group floating-label">
+                        <div class="position-relative">
+                            <input type="password" class="form-control input-password @(ViewData.ModelState["ConfirmPassword"]?.Errors.Count > 0 ? "is-invalid" : "")" id="confirm-password" data-validation-rules="required, confirm-password" data-confirm-password-for="password" minlength="8" name="ConfirmPassword" asp-for="@Model.ConfirmPassword" autocomplete="current-password" value="@Model.ConfirmPassword" required />
+                            <label for="confirm-password" class="floating-label-text">Confirme sua senha</label>
+                            <i data-bs-toggle="tooltip" data-bs-placement="right" title="Exibir senha ..." class="bi bi-eye-slash-fill toggle-password"></i>
+                            <div class="invalid-tooltip"><span>@Html.ValidationMessageFor(x => x.ConfirmPassword)</span></div>
+                        </div>
+                    </div>
+
+                </div>
+
+                <!-- Botão de Envio -->
+                <div class="row">
+                    <div class="mt-1">
+                        <button type="submit" class="btn btn-dark" data-bs-toggle="tooltip" data-bs-placement="right" title="Clique para cadastrar o usuário ..."><i class="bi bi-person-fill-add"></i> Cadastrar</button>
+                    </div>
+                </div>
+
+            </form>
+
+        </div>
+
+    </div>
+
+</div>

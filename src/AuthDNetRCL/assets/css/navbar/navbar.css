@@ -1,0 +1,80 @@
+@import url("../colors/file-colors.css");
+
+.navbar-collapse ul li a {
+    display: flex;
+    align-items: center;
+    justify-content: flex-start;
+    height: 2rem;
+    padding: 0%;
+    margin: 0%;
+}
+
+#main-navbar li {
+    border-bottom: 2px solid var(--placeholder-style);
+    margin-right: 1rem;
+}
+
+#main-navbar li a {
+    display: flex;
+    padding-left: 0.5rem;
+    flex-wrap: nowrap;
+}
+
+#main-navbar li a i{
+    padding-right: 0.3rem;
+}
+
+#logged-user-space {
+    width: 15rem;
+    margin: 0rem 3rem;
+}
+
+#logged-user-space:hover{
+    cursor: pointer;
+}
+
+#logged-user-space span {
+  background-color: var(--bg-grey-color);
+  color: var(--light-color);
+  border: 2px solid var(--placeholder-style);
+}
+
+#logged-user-space input {
+    width: 5rem;
+    background-color: var(--light-color-c);
+    color: var(--disabled-style);
+    font-size: 0.8rem;
+    border: 2px solid var(--placeholder-style);
+}
+
+#logged-user-space {
+  
+}
+
+#logo a {
+  max-width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: space-evenly;
+  margin: 0%;
+}
+
+@media (min-width: 600px), (max-width: 1800px) {
+  #main-navbar ul:first-child {
+    margin-left: 0rem;
+  }
+}
+
+@media (max-width: 600px) {
+  #logged-user-space {
+    margin: auto;
+  }
+
+  #logo a {
+    justify-content: start;
+  }
+
+  #logo span {
+    display: none;
+  }
+}

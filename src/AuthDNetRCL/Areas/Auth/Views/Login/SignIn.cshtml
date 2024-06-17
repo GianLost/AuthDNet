@@ -1,0 +1,75 @@
+@using AuthDNetLib.Models.Login
+
+@model LoginModel
+
+@{
+    Layout = "_LayoutBlank";
+    ViewData["Title"] = "Log in";
+}
+
+<div id="login-container" class="container">
+
+    @if (TempData["UnauthorizedAccess"] != null)
+    {
+        <div class="alert alert-danger" role="alert">
+            <button type="button" class="btn btn-sm btn-danger close-alert" data-dismiss="modal" aria-label="Close">
+                <span class="close-span" aria-hidden="true">&times;</span>
+            </button>
+            <div class="me-3">
+                <i class="bi bi-shield-fill-check"></i>
+            </div>
+            <p class="m-0">@TempData["UnauthorizedAccess"]</p>
+        </div>
+    }
+
+    <div id="login-card" class="card border-secondary">
+
+        <div class="card-header text-light bg-dark">
+            <h1>Log<span>In</span></h1>
+        </div>
+
+        <div class="card-body">
+
+            <form id="login-form" asp-controller="Login" asp-action="SignIn" method="post" class="needs-validation" novalidate>
+
+                @Html.AntiForgeryToken()
+
+                <div class="row m-0 p-0">
+
+                    <!-- Campo Login -->
+                    <div class="col-md-12 form-group floating-label">
+                        <div class="position-relative">
+                            <input class="form-control @(ViewData.ModelState.ErrorCount > 0 ? "is-invalid" : "")" id="login-name" autocomplete="off" name="LoginName" value="@Model.LoginName" data-validation-rules="required, min-length" data-min-length="6" asp-for="@Model.LoginName" required>
+                            <label for="login-name" class="floating-label-text">Informe seu login</label>
+                            <div class="invalid-tooltip">
+                                <span>@Html.ValidationMessageFor(x => x.LoginName)</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Campo Senha -->
+                    <div class="col-md-12 form-group floating-label">
+                        <div class="position-relative">
+                            <input class="form-control input-password @(ViewData.ModelState.ErrorCount > 0 ? "is-invalid" : "")" id="login-password" type="password" autocomplete="off" name="Password" value="@Model.Password" data-validation-rules="required, pattern, min-length" data-min-length="8" asp-for="@Model.Password" required>
+                            <label for="login-password" class="floating-label-text">Informe sua senha</label>
+                            <i data-bs-toggle="tooltip" data-bs-placement="right" title="Exibir senha ..." class="bi bi-eye-slash-fill toggle-password"></i>
+                            <div class="invalid-tooltip">
+                                <span>@Html.ValidationMessageFor(x => x.Password)</span>
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+
+                <div>
+                    <button type="submit" class="door btn btn-dark btn-block text-light" data-bs-toggle="tooltip" data-bs-placement="right" title="Clique para entrar ..."><i class="bi bi-door-closed-fill"></i> Entrar</button>
+                    <p class="text-light mt-1 mb-0">Não consegue fazer login? <a href="" class="text-purple fw-bold" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Clique aqui para alterar sua senha ...">Alterar senha</a> .</p>
+                </div>
+
+            </form>
+
+        </div>
+
+    </div>
+
+</div>

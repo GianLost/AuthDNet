@@ -1,0 +1,40 @@
+/* Imports e variáveis */
+@import url("../colors/file-colors.css");
+
+/* Estilos para o contêiner de registro de usuário */
+#register-user-container {
+    display: flex;
+    justify-content: center;
+}
+
+#register-user-container .card {
+    background-color: var(--bg-grey-color);
+    padding: 0.5rem;
+}
+
+#register-user-container .card-body {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    min-height: 25rem;
+}
+
+#register-user-container .card-header h1 {
+    font-size: 2rem;
+    margin: auto;
+}
+
+/* Estilos para o formulário de registro de usuário */
+#register-user-form {
+    width: 100%;
+    height: 100%;
+}
+
+#register-user-form .col-md-6 {
+    margin: 1rem 0rem 1.8rem 0rem;
+    position: relative;
+}
+
+#register-user-form button i {
+    font-size: 1.2rem;
+}

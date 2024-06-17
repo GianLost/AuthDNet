@@ -1,0 +1,142 @@
+@import url("../colors/file-colors.css");
+
+/* icon bi-eye Styles */
+.bi-eye-slash-fill,
+.bi-eye-fill {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    position: absolute;
+    top: 50%;
+    right: 2.5rem;
+    font-size: 1.1rem;
+    transform: translateY(-50%);
+    cursor: pointer;
+    border-color: var(--light-color);
+    background-color: var(--bg-grey-color);
+    color: var(--placeholder-style);
+}
+
+.bi-eye-slash-fill:hover,
+.bi-eye-fill:hover {
+    color: var(--placeholder-style-hover);
+}
+
+/* Tooltip Styles */
+.invalid-tooltip {
+    width: auto;
+    background-color: var(--danger-color) !important;
+    border-radius: 0rem 0.2rem 0.2rem 0.2rem;
+    margin-top: 3px;
+    color: var(--light-color-opacity-a);
+    font-size: 0.8rem;
+}
+
+.tooltip.top > .tooltip-arrow {
+    color: var(--purple-color);
+}
+
+.tooltip-inner {
+    max-width: 20rem;
+    padding: 0.8rem;
+    background-color: var(--purple-color) !important;
+}
+
+.tooltip.bs-tooltip-top .tooltip-arrow::before {
+    border-top-color: var(--purple-color) !important;
+    border-top-width: 0.6rem;
+}
+
+.tooltip.bs-tooltip-bottom .tooltip-arrow::before {
+    border-bottom-color: var(--purple-color) !important;
+    border-bottom-width: 0.6rem;
+}
+
+.tooltip.bs-tooltip-start .tooltip-arrow::before {
+    border-left-color: var(--purple-color) !important;
+    border-left-width: 0.6rem;
+}
+
+.tooltip.bs-tooltip-end .tooltip-arrow::before {
+    border-right-color: var(--purple-color) !important;
+    border-right-width: 0.6rem;
+}
+
+.alert {
+    width: 90%;
+    max-width: 500px;
+    height: auto;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 1rem;
+    position: absolute;
+    top: 1.8rem;
+    left: 50%;
+    transform: translateX(-50%) translateY(-20px);
+    z-index: 10;
+    box-shadow: 2px 3px 8px var(--light-color);
+    border-radius: 0.3rem;
+    opacity: 0;
+    transition: opacity 0.5s, transform 0.5s;
+}
+
+.alert p {
+    font-size: 1rem;
+}
+
+.alert.show {
+    opacity: 1;
+    transform: translateX(-50%) translateY(0);
+}
+
+.alert.hide {
+    opacity: 0;
+    transform: translateX(-50%) translateY(-20px);
+}
+
+.alert:hover {
+    transform: translateX(-50%) translateY(-5px) scale(1.03);
+    cursor: pointer;
+}
+
+.alert i {
+    font-size: 1.5rem;
+    margin: 0;
+    padding: 0;
+    background-color: transparent;
+}
+
+.alert .me-3 {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background-color: var(--light-color);
+    width: 3rem;
+    height: 3rem;
+    border-radius: 50%;
+    flex-shrink: 0;
+    margin-right: 1rem;
+}
+
+.close-alert {
+    position: absolute;
+    top: -1.3rem;
+    right: -1.3rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 50%;
+    width: 2.5rem;
+    height: 2.5rem;
+    cursor: pointer;
+}
+
+.close-alert:hover {
+    border: 2px solid var(--light-color);
+}
+
+.close-alert .close-span {
+    font-size: 1.5rem;
+    line-height: 1;
+}

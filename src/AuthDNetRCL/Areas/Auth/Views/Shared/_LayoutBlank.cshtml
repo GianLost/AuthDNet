@@ -1,0 +1,51 @@
+﻿<!DOCTYPE html>
+
+<html lang="pt-BR">
+
+    <head>
+
+        <meta charset="utf-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=0.5, maximum-scale=2.0" />
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <meta name="author" content="Gianluca Vialli">
+
+        <title>@ViewData["Title"] - Auth.NET</title>
+
+        <!-- Bootstrap icons CDN -->
+        <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
+
+        <!-- Bootstrap min.css -->
+        <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" asp-append-version="true" />
+
+        <!-- Custom css -->
+        <link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
+        <link rel="stylesheet" href="~/css/login-page/login.css" asp-append-version="true" />
+        <link rel="stylesheet" href="~/css/components/components.css" asp-append-version="true" />
+
+    </head>
+
+    <body id="login-body">
+
+        @RenderBody()
+
+        <!-- JQuery min.js -->
+        <script src="~/lib/jquery/dist/jquery.min.js" asp-append-version="true"></script>
+
+        <!-- Bootstrap bundle.min.js -->
+        <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js" asp-append-version="true"></script>
+
+        <!-- Custom js -->
+        <script type="module" src="~/js/animation/togglePasswordVisibility.js" asp-append-version="true"></script>
+        <script src="~/js/components/tooltips.js" asp-append-version="true"></script>
+        <script type="module" src="~/js/animation/door.js" asp-append-version="true"></script>
+        <script type="module" src="~/js/forms/cryptography/dataCrypt.js" asp-append-version="true"></script>
+        <script type="module" src="~/js/forms/validation/validate-forms.js" asp-append-version="true"></script>
+        <script src="~/js/components/alerts.js" asp-append-version="true"></script>
+        <script src="~/js/forms/form.js" asp-append-version="true"></script>
+        <script src="~/js/site.js" asp-append-version="true"></script>
+
+        @await RenderSectionAsync("Scripts", required: false)
+
+    </body>
+
+</html>

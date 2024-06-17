@@ -1,0 +1,44 @@
+﻿@using AuthDNetLib.Interfaces.Users.Session
+@using AuthDNetLib.Models.Users
+
+@inject ISessionMenager<TUser> SessionMenager
+
+@model TUser
+
+<div class="container-fluid">
+
+    <div id="logo" class="d-flex align-items-center ms-3">
+        <a class="navbar-brand" asp-area="" asp-action="Index" asp-controller="Home">
+            <img src="~/icon/navbar/navbar.ico" alt="navbar icon" width="30" height="30">
+            <span class="fs-5 ms-3">Authenticator.NET</span>
+        </a>
+    </div>
+
+    <div id="logged-user-space" class="input-group input-group-sm">
+        @if (await SessionMenager.GetSessionAsync() != null)
+        {
+            <span class="input-group-text" data-bs-toggle="tooltip" data-bs-placement="bottom" title="usuário autenticado..."><i class="bi bi-person-fill"></i></span>
+            <input name="login-profile" type="text" title="usuário logado ..." class="form-control form-control-sm" value="@Model.Login" aria-label="Username" aria-describedby="logged-user" disabled>
+        }
+    </div>
+
+    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#main-navbar" aria-controls="main-navbar" aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+    </button>
+
+    <div class="collapse navbar-collapse" id="main-navbar">
+
+        <ul class="navbar-nav flex-grow-1">
+            <li class="nav-item">
+                <a class="nav-link" asp-area="" asp-controller="Home" asp-action="Index"><i class="bi bi-house-fill"></i> Home</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" asp-area="" asp-controller="Home" asp-action="Privacy"> <i class="bi bi-shield-fill-exclamation"></i> Privacy</a>
+            </li>
+        </ul>
+
+        @await Html.PartialAsync("~/Views/Shared/_LoginPartial.cshtml")
+
+    </div>
+
+</div>
