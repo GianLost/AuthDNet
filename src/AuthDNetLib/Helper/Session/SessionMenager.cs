@@ -19,6 +19,18 @@ using System.Text.Json;
 
 namespace AuthDNetLib.Helper.Session;
 
+/// <summary>
+/// Implementação do gerenciador de sessões de usuários.
+/// </summary>
+/// <remarks>
+/// Inicializa uma nova instância da classe <see cref="SessionMenager{T}"/>.
+/// </remarks>
+/// <param name="userService">O serviço de usuário.</param>
+/// <param name="validator">O validador de usuários.</param>
+/// <param name="httpContextAccessor">Acessao do contexto HTTP.</param>
+/// <param name="database">O contexto do banco de dados.</param>
+/// <exception cref="ArgumentNullException">Lançado se qualquer um dos parâmetros for nulo.</exception>
+/// <exception cref="InvalidOperationException">Lançado em casos de opeções inválidas.</exception>
 public class SessionMenager<T>(IUserService<T> userService, IValidator<T> validator, IHttpContextAccessor httpContextAccessor, ApplicationDbContext database) : ISessionMenager<T> where T : class
 {
     private readonly IUserService<T> _userService = userService ?? throw new InvalidOperationException(nameof(userService));
@@ -30,7 +42,7 @@ public class SessionMenager<T>(IUserService<T> userService, IValidator<T> valida
     /// <summary>
     /// Obtém a sessão atual do usuário.
     /// </summary>
-    /// <returns>Retorna a sessão atual do usuário ou null se não houver sessão.</returns>
+    /// <returns>A sessão atual do usuário ou null se não houver sessão.</returns>
     public async Task<T?> GetSessionAsync()
     {
         HttpContext? httpContext = _httpContextAccessor.HttpContext ?? throw new InvalidOperationException(ErrorMessages.MsgNullHttpContext);
@@ -57,10 +69,12 @@ public class SessionMenager<T>(IUserService<T> userService, IValidator<T> valida
     }
 
     /// <summary>
-    /// Busca por um usuário com os parametros fornecidos para estabelecer uma sessão.
+    /// Realiza o login do usuário e configura a sessão.
     /// </summary>
     /// <param name="login">O nome de login do usuário.</param>
-    /// <returns>Retorna o usuário para ser autenticado.</returns>
+    /// <param name="password">A senha do usuário.</param>
+    /// <returns>O usuário autenticado.</returns>
+    /// <exception cref="UnauthorizedAccessException">Lançado em que casos onde o usuário não obtém permissão para ser autenticado.</exception>
     public async Task<T> SignInAsync(string login, string password)
     {
         // Obter a propriedade 'Login' usando reflexão
@@ -77,13 +91,13 @@ public class SessionMenager<T>(IUserService<T> userService, IValidator<T> valida
         if (userEntity.IsLockedOut && userEntity.LockoutEnd > DateTime.UtcNow)
             throw new UnauthorizedAccessException(ErrorMessages.MsgLockedAccount);
 
-        // Utilizar reflexão para obter a propriedade 'Password'
+        // Reflexão para obter a propriedade 'Password'
         PropertyInfo passwordProperty = user.GetType().GetProperty("Password") ?? throw new InvalidOperationException(ErrorMessages.MsgPasswordNotExist);
 
-        // Obter o valor da propriedade 'Password'
+        // Valor da propriedade 'Password'
         string? hashedPassword = (string?)passwordProperty.GetValue(user);
 
-        // Verificar se a senha está correta
+        // Verifica se a senha está correta utilizando a verificação do BCrypt.
         if (hashedPassword == null || !_validator.IsPasswordValid(password, hashedPassword))
         {
             LogFailedAttempt(login);
@@ -100,12 +114,12 @@ public class SessionMenager<T>(IUserService<T> userService, IValidator<T> valida
     }
 
     /// <summary>
-    /// Registra uma falha na tentativa de realizar login utilizando um usuário existente.
+    /// Registra uma falha na tentativa de login.
     /// </summary>
     /// <param name="login">O nome de login do usuário.</param>
     public void LogFailedAttempt(string login)
     {
-        // Encontrar o usuário pelo login
+        // Buscar o usuário pelo nome de login
         T? user = _database.Set<T>().FirstOrDefault(u => EF.Property<string>(u, "Login") == login);
 
         if (user != null)
@@ -120,7 +134,7 @@ public class SessionMenager<T>(IUserService<T> userService, IValidator<T> valida
             if (userEntity.FailedAttempts >= 3)
             {
                 userEntity.IsLockedOut = true;
-                userEntity.LockoutEnd = DateTime.UtcNow.AddMinutes(5); // Tempo de bloqueio
+                userEntity.LockoutEnd = DateTime.UtcNow.AddMinutes(3); // Tempo de bloqueio
             }
 
             // Atualizar o usuário no banco de dados
@@ -133,7 +147,7 @@ public class SessionMenager<T>(IUserService<T> userService, IValidator<T> valida
     /// Reseta o contador de tentativas falhas de login.
     /// </summary>
     /// <param name="userEntity">A entidade do usuário.</param>
-    /// <returns>Retorna a entidade do usuário atualizada.</returns>
+    /// <returns>A entidade do usuário atualizada.</returns>
     public async Task<dynamic> ResetFailedAttempts(dynamic userEntity)
     {
         userEntity.FailedAttempts = 0;
@@ -167,7 +181,9 @@ public class SessionMenager<T>(IUserService<T> userService, IValidator<T> valida
     /// Gera um token JWT para o usuário autenticado.
     /// </summary>
     /// <param name="user">O usuário autenticado.</param>
-    /// <returns>Retorna um token JWT.</returns>
+    /// <returns>Um token JWT.</returns>
+    /// <exception cref="InvalidOperationException">Lançado se a chave de segurança JWT não estiver configurada.</exception>
+    /// <exception cref="SecurityTokenValidationException">Lançado se o token JWT gerado for inválido.</exception>
     public async Task<string> GenerateJwtTokenAsync(T user)
     {
         string? secret = _configuration["JwtConfig:Secret"] ?? throw new InvalidOperationException(ErrorMessages.MsgJWTSecureKeyNotConfigured);
@@ -210,7 +226,8 @@ public class SessionMenager<T>(IUserService<T> userService, IValidator<T> valida
     /// Valida um token JWT.
     /// </summary>
     /// <param name="token">O token JWT a ser validado.</param>
-    /// <returns>Retorna true se o token for válido, caso contrário, false.</returns>
+    /// <returns>True se o token for válido, caso contrário, false.</returns>
+    /// <exception cref="InvalidOperationException">Lançado se a chave de segurança JWT não estiver configurada.</exception>
     public async Task<bool> ValidateJwtTokenAsync(string token)
     {
         JwtSecurityTokenHandler tokenHandler = new();
@@ -243,6 +260,7 @@ public class SessionMenager<T>(IUserService<T> userService, IValidator<T> valida
     /// <summary>
     /// Encerra a sessão do usuário.
     /// </summary>
+    /// <exception cref="InvalidOperationException">Lançado se não houver sessão ativa.</exception>
     public void SignOut()
     {
         HttpContext httpContext = _httpContextAccessor.HttpContext ?? throw new InvalidOperationException(ErrorMessages.MsgNullHttpContext);

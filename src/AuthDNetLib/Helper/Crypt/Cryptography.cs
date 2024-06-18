@@ -37,11 +37,29 @@ public class Cryptography : ICryptography
         return BCrypt.Net.BCrypt.HashPassword(key, workFactor);
     }
 
+    /// <summary>
+    /// Converte uma chave em texto simples para uma string codificada em Base64.
+    /// </summary>
+    /// <param name="key">A chave em texto simples a ser codificada.</param>
+    /// <returns>A chave codificada em Base64.</returns>
+    /// <remarks>
+    /// Este método converte a chave de texto simples em uma sequência de bytes usando a codificação UTF-8, 
+    /// e depois converte esses bytes em uma string Base64.
+    /// </remarks>
     public string EncryptToBase64(string key)
     {
         return Convert.ToBase64String(System.Text.Encoding.UTF8.GetBytes(key));
     }
 
+    /// <summary>
+    /// Decodifica uma string codificada em Base64 para uma chave em texto simples.
+    /// </summary>
+    /// <param name="encryptedData">A string codificada em Base64 a ser decodificada.</param>
+    /// <returns>A chave decodificada em texto simples.</returns>
+    /// <remarks>
+    /// Este método converte a string Base64 de volta em uma sequência de bytes e 
+    /// depois converte esses bytes em uma string de texto simples usando a codificação UTF-8.
+    /// </remarks>
     public string DecryptFromBase64(string encryptedData)
     {
         return System.Text.Encoding.UTF8.GetString(Convert.FromBase64String(encryptedData));
