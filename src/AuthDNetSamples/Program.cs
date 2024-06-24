@@ -11,6 +11,7 @@ using AuthDNetLib.Interfaces.Validation;
 using AuthDNetLib.Services.Tokens;
 using AuthDNetLib.Services.Users;
 using AuthDNetSamples.Data;
+using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.FileProviders;
@@ -61,7 +62,7 @@ void ConfigureServices(WebApplicationBuilder builder)
     builder.Services.AddAntiforgery(options =>
     {
         options.Cookie.SecurePolicy = CookieSecurePolicy.Always;
-        options.Cookie.SameSite = SameSiteMode.Strict;
+        options.Cookie.SameSite = SameSiteMode.Lax;
     });
 
     ConfigureDbContext();
@@ -74,6 +75,18 @@ void ConfigureServices(WebApplicationBuilder builder)
     builder.Services.AddScoped<ICryptography, Cryptography>();
     builder.Services.AddScoped<ITokenService, TokenService>();
 
+    // Configure Cookie Authentication
+    builder.Services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationScheme)
+        .AddCookie(options =>
+        {
+            options.Cookie.HttpOnly = true;
+            options.Cookie.SecurePolicy = CookieSecurePolicy.Always;
+            options.Cookie.SameSite = SameSiteMode.Lax;
+            options.ExpireTimeSpan = TimeSpan.FromMinutes(30);
+            options.SlidingExpiration = true;
+            options.LoginPath = "/Auth/Login/SignIn";
+        });
+
     // Configure JWT Authentication
     IConfigurationSection tokenSession = builder.Configuration.GetSection("JwtConfig:Secret");
 
@@ -81,11 +94,7 @@ void ConfigureServices(WebApplicationBuilder builder)
     {
         byte[] key = Encoding.ASCII.GetBytes(tokenSession.Value);
 
-        builder.Services.AddAuthentication(options =>
-        {
-            options.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
-            options.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
-        })
+        builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
         .AddJwtBearer(options =>
         {
             options.TokenValidationParameters = new TokenValidationParameters
@@ -124,6 +133,7 @@ void ConfigurePipeline(WebApplication app)
 
     app.UseRouting();
 
+    app.UseAuthentication();
     app.UseAuthorization();
     app.UseSession();
 

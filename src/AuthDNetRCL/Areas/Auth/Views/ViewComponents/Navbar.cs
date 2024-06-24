@@ -1,25 +1,42 @@
 ﻿using System.Text;
+using AuthDNetLib.Helper.Messages;
 using AuthDNetLib.Helper.Transfer.Data;
 using AuthDNetLib.Keys.Session;
 using AuthDNetLib.Models.Users;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.Logging;
 
 namespace AuthDNetRCL.Areas.Auth.Views.ViewComponents;
 
-public class Navbar(IHttpContextAccessor httpContextAccessor) : ViewComponent
+public class Navbar(ILogger<Navbar> logger, IHttpContextAccessor httpContextAccessor) : ViewComponent
 {
+    private readonly ILogger<Navbar> _logger = logger ?? throw new InvalidOperationException(nameof(logger));
+
     private readonly IHttpContextAccessor _httpContextAccessor = httpContextAccessor ?? throw new InvalidOperationException(nameof(httpContextAccessor));
 
     public async Task<IViewComponentResult> InvokeAsync()
     {
-        string? userSession = _httpContextAccessor?.HttpContext?.Session.GetString(SessionString.SessionConnectString);
+        string? userSession = _httpContextAccessor.HttpContext?.Session.GetString(SessionString.SessionConnectString);
 
         if (string.IsNullOrEmpty(userSession))
             return View();
 
-        TUser? users = await JSONDataTransfer<TUser>.JSONSecureDataDesserialize(userSession) ?? throw new InvalidOperationException("Falha ao desserializar os dados criptografados do usuário.");
+        try
+        {
+            var users = await JSONDataTransfer<TUser>.JSONSecureDataDesserialize(userSession) ?? throw new InvalidOperationException(ErrorMessages.MsgJSONDesserializeError);
 
-        return View(users);
+            return View(users);
+        }
+        catch (InvalidOperationException ex)
+        {
+            _logger.LogError("{exceptionMessage} : {Message}", ex.Message, LogMessages.MsgErrorNavbarIOE);
+            return View();
+        }
+        catch(Exception ex)
+        {
+            _logger.LogError("{exceptionMessage}: {Message}", ex.Message, LogMessages.MsgErrorNavbarGeenric);
+            return View();
+        }
     }
 }

@@ -22,9 +22,7 @@ public class TUser : TUser<string>
     /// </remarks>
     public TUser()
     {
-        Id = Guid.NewGuid().ToString();
-        FailedAttempts = 0;
-        IsLockedOut = false;
+        Initialize();
     }
 
     /// <summary>
@@ -37,9 +35,7 @@ public class TUser : TUser<string>
     /// </remarks>
     public TUser(string _login)
     {
-        Login = _login;
-        FailedAttempts = 0;
-        IsLockedOut = false;
+        Initialize();
     }
 
     /// <summary>
@@ -80,6 +76,13 @@ public class TUser : TUser<string>
     [DataType(DataType.DateTime)]
     [DisplayFormat(DataFormatString = ConstExpressions.DateTimeFormat, ApplyFormatInEditMode = true)]
     public virtual DateTime? LastFailedAttempt { get; set; }
+
+    private void Initialize()
+    {
+        Id = Guid.NewGuid().ToString();
+        FailedAttempts = 0;
+        IsLockedOut = false;
+    }
 }
 
 /// <summary>

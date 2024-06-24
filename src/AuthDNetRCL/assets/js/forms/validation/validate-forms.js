@@ -149,6 +149,7 @@ const FormHandler = {
                 encryptedInput.name = 'userEncrypted';
                 form.appendChild(encryptedInput);
             }
+
             encryptedInput.value = encryptedData;
 
             // Desabilita os campos originais para não enviar dados não criptografados

@@ -240,7 +240,7 @@ public static class ErrorMessages
     /// <summary>
     /// Mensagem de erro indicando que a conta foi bloqueada por excesso de tentativas.
     /// </summary>
-    public const string MsgLockedAccount = "Conta bloqueada por excesso de tentativas ! Tente novamente mais tarde.";
+    public const string MsgLockedAccount = "Conta bloqueada por excesso de tentativas! Tente novamente mais tarde.";
 
     /// <summary>
     /// Mensagem de erro indicando que nenhuma sessão ativa foi encontrada para ser encerrada.

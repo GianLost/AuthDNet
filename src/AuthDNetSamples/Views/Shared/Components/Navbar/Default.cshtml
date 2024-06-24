@@ -3,8 +3,6 @@
 
 @inject ISessionMenager<TUser> SessionMenager
 
-@model TUser
-
 <div class="container-fluid">
 
     <div id="logo" class="d-flex align-items-center ms-3">
@@ -17,7 +15,7 @@
     <div id="logged-user-space" class="input-group input-group-sm">
         @if (await SessionMenager.GetSessionAsync() != null)
         {
-            <span class="input-group-text" data-bs-toggle="tooltip" data-bs-placement="bottom" title="usuário autenticado..."><i class="bi bi-person-fill"></i></span>
+            <span class="input-group-text" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Perfil do usuário ..."><a class="text-light" asp-area="Auth" asp-controller="User" asp-action="Profile"><i class="bi bi-person-fill"></i></a></span>
             <input name="login-profile" type="text" title="usuário logado ..." class="form-control form-control-sm" value="@Model.Login" aria-label="Username" aria-describedby="logged-user" disabled>
         }
     </div>

@@ -61,7 +61,7 @@ public class LoginController(ISessionMenager<TUser> sessionMenager) : Controller
                 {
                     HttpOnly = true,
                     Secure = true,
-                    SameSite = SameSiteMode.Strict
+                    SameSite = SameSiteMode.Lax
                 });
 
                 return RedirectToAction("Index", "Home", new { area = "" });
@@ -82,7 +82,7 @@ public class LoginController(ISessionMenager<TUser> sessionMenager) : Controller
         }
     }
 
-    public  IActionResult Logout()
+    public IActionResult Logout()
     {
         _sessionMenager.SignOut();
         Response.Cookies.Delete("jwt");

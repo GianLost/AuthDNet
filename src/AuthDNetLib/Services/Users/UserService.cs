@@ -40,10 +40,6 @@ public class UserService<T>(ApplicationDbContext database) : IUserService<T> whe
         {
             throw new InvalidOperationException("Erro ao salvar usuário no banco de dados.", ex);
         }
-        catch (Exception ex)
-        {
-            throw new InvalidOperationException("Erro inesperado ao criar usuário.", ex);
-        }
     }
 
     /// <summary>
@@ -66,10 +62,6 @@ public class UserService<T>(ApplicationDbContext database) : IUserService<T> whe
         catch (DbUpdateException ex)
         {
             throw new InvalidOperationException("Erro ao atualizar usuário no banco de dados.", ex);
-        }
-        catch (Exception ex)
-        {
-             throw new InvalidOperationException("Erro inesperado ao atualizar usuário.", ex);
         }
     }
 
@@ -107,10 +99,6 @@ public class UserService<T>(ApplicationDbContext database) : IUserService<T> whe
         catch (DbUpdateException ex)
         {
             throw new InvalidOperationException("Erro ao excluir usuário no banco de dados.", ex);
-        }
-        catch (Exception ex)
-        {
-            throw new InvalidOperationException("Erro inesperado ao excluir usuário.", ex);
         }
     }
 

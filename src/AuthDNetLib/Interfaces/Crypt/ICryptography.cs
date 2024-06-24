@@ -29,20 +29,6 @@ public interface ICryptography
     string EncryptKey(string key, int workFactor);
 
     /// <summary>
-    /// Criptografa uma chave usando a criptografia reversiva Base64String.
-    /// </summary>
-    /// <param name="key">A chave a ser criptografada.</param>
-    /// <returns>A string criptografada da chave.</returns>
-    abstract string EncryptToBase64(string key);
-
-    /// <summary>
-    /// Descriptografa uma chave gerada por Base64String usando FromBase64String.
-    /// </summary>
-    /// <param name="encryptedKey">A hash da chave a ser descriptografada.</param>
-    /// <returns>A string descriptografada da chave.</returns>
-    abstract string DecryptFromBase64(string encryptedKey);
-
-    /// <summary>
     /// Verifica se uma chave corresponde a um hash criptografado usando Bcrypt.
     /// </summary>
     /// <param name="key">A chave não criptografada a ser verificada.</param>

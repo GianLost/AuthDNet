@@ -75,7 +75,7 @@
     left: 50%;
     transform: translateX(-50%) translateY(-20px);
     z-index: 10;
-    box-shadow: 2px 3px 8px var(--light-color);
+    box-shadow: 2px 2px 5px var(--light-color);
     border-radius: 0.3rem;
     opacity: 0;
     transition: opacity 0.5s, transform 0.5s;
