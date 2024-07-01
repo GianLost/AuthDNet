@@ -30,12 +30,12 @@ public class Navbar(ILogger<Navbar> logger, IHttpContextAccessor httpContextAcce
         }
         catch (InvalidOperationException ex)
         {
-            _logger.LogError("{exceptionMessage} : {Message}", ex.Message, LogMessages.MsgErrorNavbarIOE);
+            _logger.LogError("{Date} - {exceptionMessage} : {Message}", DateTime.UtcNow, ex.Message, LogMessages.MsgErrorNavbarIOE);
             return View();
         }
         catch(Exception ex)
         {
-            _logger.LogError("{exceptionMessage}: {Message}", ex.Message, LogMessages.MsgErrorNavbarGeenric);
+            _logger.LogError("{Date} - {exceptionMessage}: {Message}", DateTime.UtcNow, ex.Message, LogMessages.MsgErrorNavbarGeenric);
             return View();
         }
     }

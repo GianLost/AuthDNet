@@ -209,6 +209,7 @@ public abstract class TUser<TKey> where TKey : IEquatable<TKey>
     [MinLength(8, ErrorMessage = ErrorMessages.MsgPasswordMinLength)]
     [RegularExpression(ConstExpressions.StrongPasswordRegex, ErrorMessage = ErrorMessages.MsgPasswordRegex)]
     [StringLength(150)]
+    [DataType(DataType.Password)]
     [ProtectedPersonalData]
     public virtual string? Password { get; set; }
 

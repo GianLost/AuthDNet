@@ -185,7 +185,6 @@ public partial class UserValidator<T> : IValidator<T> where T : class
     /// </summary>
     /// <param name="password">A senha a ser verificada.</param>
     /// <param name="hashedPassword">O hash da senha criptografado para validar a autenticidade.</param>
-    /// <param name="modelState">O ModelStateDictionary para adicionar erros de validação.</param>
     /// <returns>True se a senha corresponder ao hash, caso contrário, false.</returns>
     public virtual bool IsPasswordValid(string password, string hashedPassword)
     {

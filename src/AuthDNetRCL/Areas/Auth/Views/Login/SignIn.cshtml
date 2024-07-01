@@ -9,6 +9,8 @@
 
 <div id="login-container" class="container">
 
+    @*Criar componente para modularizar os alerts*@
+
     @if (TempData["UnauthorizedAccess"] != null)
     {
         <div class="alert alert-danger" role="alert">
@@ -39,11 +41,9 @@
                     <!-- Campo Login -->
                     <div class="col-md-12 form-group floating-label">
                         <div class="position-relative">
-                            <input class="form-control @(ViewData.ModelState.ErrorCount > 0 ? "is-invalid" : "")" id="login-name" autocomplete="off" name="LoginName" value="@Model.LoginName" data-validation-rules="required, min-length" data-min-length="6" asp-for="@Model.LoginName" required>
+                            <input class="form-control @(ViewData.ModelState.ErrorCount > 0 ? "is-invalid" : "")" id="login-name" autocomplete="off" name="Login" value="@Model.Login" data-validation-rules="required, min-length" data-min-length="6" asp-for="@Model.Login" required>
                             <label for="login-name" class="floating-label-text">Informe seu login</label>
-                            <div class="invalid-tooltip">
-                                <span>@Html.ValidationMessageFor(x => x.LoginName)</span>
-                            </div>
+                            <div class="invalid-tooltip" hidden></div>
                         </div>
                     </div>
 
@@ -53,9 +53,7 @@
                             <input class="form-control input-password @(ViewData.ModelState.ErrorCount > 0 ? "is-invalid" : "")" id="login-password" type="password" autocomplete="off" name="Password" value="@Model.Password" data-validation-rules="required, pattern, min-length" data-min-length="8" asp-for="@Model.Password" required>
                             <label for="login-password" class="floating-label-text">Informe sua senha</label>
                             <i data-bs-toggle="tooltip" data-bs-placement="right" title="Exibir senha ..." class="bi bi-eye-slash-fill toggle-password"></i>
-                            <div class="invalid-tooltip">
-                                <span>@Html.ValidationMessageFor(x => x.Password)</span>
-                            </div>
+                            <div class="invalid-tooltip" hidden></div>
                         </div>
                     </div>
 

@@ -53,7 +53,7 @@ public class LoginController(ISessionMenager<TUser> sessionMenager) : Controller
 
             if (ModelState.IsValid)
             {
-                var user = await _sessionMenager.SignInAsync(login.LoginName, login.Password);
+                var user = await _sessionMenager.SignInAsync(login.Login, login.Password);
 
                 string? token = await _sessionMenager.GenerateJwtTokenAsync(user);
 

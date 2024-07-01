@@ -22,21 +22,21 @@ public class UserController(ApplicationDbContext database, IUserService<TUser> u
     public IActionResult Profile() => View();
 
     [HttpGet]
-    public IActionResult Register() => View(new TUser());
+    public IActionResult Register() => View(new RegisterModel());
 
     [HttpPost]
     [ValidateAntiForgeryToken]
-    public async Task<IActionResult> Register(TUser user, string? userEncrypted = null)
+    public async Task<IActionResult> Register(RegisterModel user, string? userEncrypted = null)
     {
         try
         {
             if (!string.IsNullOrEmpty(userEncrypted))
             {
                 // Desserializa o userEncrypted para um objeto TUser
-                user = await JSONDataTransfer<TUser>.JSONSecureDataDesserialize(userEncrypted);
+                user = await JSONDataTransfer<RegisterModel>.JSONSecureDataDesserialize(userEncrypted);
 
                 // Atualiza as propriedades do login com os valores desserializados
-                foreach (var prop in typeof(TUser).GetProperties())
+                foreach (var prop in typeof(RegisterModel).GetProperties())
                 {
                     var value = prop.GetValue(user);
                     prop.SetValue(user, value);
@@ -99,7 +99,7 @@ public class UserController(ApplicationDbContext database, IUserService<TUser> u
     /// <param name="user">Objeto do usuário a ser validado.</param>
     /// <returns>Retorna true se todas as validações forem bem-sucedidas; caso contrário, false.</returns>
     /// <exception cref="ArgumentNullException">Lançada se qualquer campo obrigatório for nulo ou vazio.</exception>
-    private async Task<bool> FullUserValidationAsync(TUser user)
+    private async Task<bool> FullUserValidationAsync(RegisterModel user)
     {
         if (string.IsNullOrEmpty(user.Email) || string.IsNullOrEmpty(user.Password) || string.IsNullOrEmpty(user.ConfirmEmail) || string.IsNullOrEmpty(user.ConfirmPassword))
             throw new ArgumentNullException(nameof(user));

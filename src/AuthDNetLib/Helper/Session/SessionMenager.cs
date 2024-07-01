@@ -34,9 +34,13 @@ namespace AuthDNetLib.Helper.Session;
 public class SessionMenager<T>(IUserService<T> userService, IValidator<T> validator, IHttpContextAccessor httpContextAccessor, ApplicationDbContext database) : ISessionMenager<T> where T : class
 {
     private readonly IUserService<T> _userService = userService ?? throw new InvalidOperationException(nameof(userService));
+
     private readonly IValidator<T> _validator = validator ?? throw new InvalidOperationException(nameof(validator));
+
     private readonly IHttpContextAccessor _httpContextAccessor = httpContextAccessor ?? throw new InvalidOperationException(nameof(httpContextAccessor));
+
     private readonly ApplicationDbContext _database = database ?? throw new ArgumentNullException(nameof(database));
+
     private readonly IConfiguration _configuration = new ConfigurationBuilder().AddJsonFile("appsettings.json").Build() ?? throw new ArgumentNullException(nameof(_configuration));
 
     /// <summary>

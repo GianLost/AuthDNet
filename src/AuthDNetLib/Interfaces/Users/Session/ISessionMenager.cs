@@ -57,5 +57,4 @@ public interface ISessionMenager<T> where T : class
     /// Encerra a sessão do usuário removendo os tokens, cookies e dados armazenados na sessão.
     /// </summary>
     void SignOut();
-
 }
