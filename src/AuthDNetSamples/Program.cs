@@ -28,11 +28,9 @@ void ConfigureDbContext()
 
     connectionString = envconnectionString;
 
-    ServerVersion serverVersion = ServerVersion.AutoDetect(connectionString);
-
     builder.Services.AddDbContext<ApplicationContext>(options =>
     {
-        options.UseMySql(connectionString, serverVersion, c => c.MigrationsAssembly("AuthDNetSamples"));
+        options.UseSqlServer(connectionString, c => c.MigrationsAssembly("AuthDNetSamples"));
     });
 
     builder.Services.AddScoped<ApplicationDbContext>(provider =>
